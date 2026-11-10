@@ -7,22 +7,9 @@ networks:
       config:
         - subnet: 172.16.239.0/24
 
-x-besu-node: &besu-node
-  image: hyperledger/besu:latest
-  networks:
-    - besu_network
-  command:
-    - --network-id=1337
-    - --genesis-file=/networkFiles/output/genesis.json
-    - --data-path=/opt/besu/data
-    - --rpc-http-enabled=true
-    - --rpc-http-api=ETH,NET,QBFT,WEB3
-    - --rpc-http-cors-origins=all
-    - --host-allowlist=*
-
 services:
   rektorat:
-    <<: *besu-node
+    image: hyperledger/besu:latest
     container_name: rektorat
     networks:
       besu_network:
@@ -32,17 +19,27 @@ services:
       - ./data/rektorat:/opt/besu/data
       - ./keys/rektorat:/opt/besu/keys
     command:
-      - --node-private-key-file=/opt/besu/keys/key
+      - --network-id=1337
       - --genesis-file=/networkFiles/output/genesis.json
+      - --data-path=/opt/besu/data
+      - --node-private-key-file=/opt/besu/keys/key
+      - --rpc-http-enabled=true
+      - --rpc-http-host=0.0.0.0
       - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,QBFT,WEB3
+      - --rpc-http-cors-origins=*
+      - --host-allowlist=*
       - --p2p-port=30301
+      - --min-gas-price=0
     ports:
       - "8545:8545"
       - "30301:30301"
 
   bak:
-    <<: *besu-node
+    image: hyperledger/besu:latest
     container_name: bak
+    networks:
+      - besu_network
     depends_on:
       - rektorat
     volumes:
@@ -50,18 +47,28 @@ services:
       - ./data/bak:/opt/besu/data
       - ./keys/bak:/opt/besu/keys
     command:
-      - --node-private-key-file=/opt/besu/keys/key
+      - --network-id=1337
       - --genesis-file=/networkFiles/output/genesis.json
-      - --rpc-http-port=8546
-      - --p2p-port=30302
+      - --data-path=/opt/besu/data
+      - --node-private-key-file=/opt/besu/keys/key
+      - --rpc-http-enabled=true
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,QBFT,WEB3
+      - --rpc-http-cors-origins=*
+      - --host-allowlist=*
+      - --p2p-port=30301
+      - --min-gas-price=0
       - --bootnodes=enode://263dfc6553b550e9e519d7989bd458bf92584bedbded56e20c93f70ae764082a5ddcbe0d8e1b6f2440ee74b220578fba0db63bbda573a941a7db8086425c688b@172.16.239.11:30301
     ports:
       - "8546:8545"
       - "30302:30301"
 
   fakultas_mipa:
-    <<: *besu-node
+    image: hyperledger/besu:latest
     container_name: fakultas_mipa
+    networks:
+      - besu_network
     depends_on:
       - rektorat
     volumes:
@@ -69,18 +76,28 @@ services:
       - ./data/fakultas_mipa:/opt/besu/data
       - ./keys/fakultas_mipa:/opt/besu/keys
     command:
-      - --node-private-key-file=/opt/besu/keys/key
+      - --network-id=1337
       - --genesis-file=/networkFiles/output/genesis.json
-      - --rpc-http-port=8547
-      - --p2p-port=30303
+      - --data-path=/opt/besu/data
+      - --node-private-key-file=/opt/besu/keys/key
+      - --rpc-http-enabled=true
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,QBFT,WEB3
+      - --rpc-http-cors-origins=*
+      - --host-allowlist=*
+      - --p2p-port=30301
+      - --min-gas-price=0
       - --bootnodes=enode://263dfc6553b550e9e519d7989bd458bf92584bedbded56e20c93f70ae764082a5ddcbe0d8e1b6f2440ee74b220578fba0db63bbda573a941a7db8086425c688b@172.16.239.11:30301
     ports:
       - "8547:8545"
       - "30303:30301"
 
   fakultas_pertanian:
-    <<: *besu-node
+    image: hyperledger/besu:latest
     container_name: fakultas_pertanian
+    networks:
+      - besu_network
     depends_on:
       - rektorat
     volumes:
@@ -88,18 +105,28 @@ services:
       - ./data/fakultas_pertanian:/opt/besu/data
       - ./keys/fakultas_pertanian:/opt/besu/keys
     command:
-      - --node-private-key-file=/opt/besu/keys/key
+      - --network-id=1337
       - --genesis-file=/networkFiles/output/genesis.json
-      - --rpc-http-port=8548
-      - --p2p-port=30304
+      - --data-path=/opt/besu/data
+      - --node-private-key-file=/opt/besu/keys/key
+      - --rpc-http-enabled=true
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,QBFT,WEB3
+      - --rpc-http-cors-origins=*
+      - --host-allowlist=*
+      - --p2p-port=30301
+      - --min-gas-price=0
       - --bootnodes=enode://263dfc6553b550e9e519d7989bd458bf92584bedbded56e20c93f70ae764082a5ddcbe0d8e1b6f2440ee74b220578fba0db63bbda573a941a7db8086425c688b@172.16.239.11:30301
     ports:
       - "8548:8545"
       - "30304:30301"
 
   upt_tik:
-    <<: *besu-node
+    image: hyperledger/besu:latest
     container_name: upt_tik
+    networks:
+      - besu_network
     depends_on:
       - rektorat
     volumes:
@@ -107,10 +134,18 @@ services:
       - ./data/upt_tik:/opt/besu/data
       - ./keys/upt_tik:/opt/besu/keys
     command:
-      - --node-private-key-file=/opt/besu/keys/key
+      - --network-id=1337
       - --genesis-file=/networkFiles/output/genesis.json
-      - --rpc-http-port=8549
-      - --p2p-port=30305
+      - --data-path=/opt/besu/data
+      - --node-private-key-file=/opt/besu/keys/key
+      - --rpc-http-enabled=true
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,QBFT,WEB3
+      - --rpc-http-cors-origins=*
+      - --host-allowlist=*
+      - --p2p-port=30301
+      - --min-gas-price=0
       - --bootnodes=enode://263dfc6553b550e9e519d7989bd458bf92584bedbded56e20c93f70ae764082a5ddcbe0d8e1b6f2440ee74b220578fba0db63bbda573a941a7db8086425c688b@172.16.239.11:30301
     ports:
       - "8549:8545"
