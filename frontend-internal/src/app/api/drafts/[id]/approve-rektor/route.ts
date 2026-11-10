@@ -2,10 +2,9 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { contract } from '@/lib/web3';
 
-export async function POST(req: Request, { params }: { params: Promise<{ id: string }> | { id: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await Promise.resolve(params);
-    const id = resolvedParams.id;
+    const { id } = await params;
 
     // 1. Ambil data draft dari Database Off-chain (PostgreSQL)
     const draft = await prisma.draftIjazah.findUnique({ where: { id } });
