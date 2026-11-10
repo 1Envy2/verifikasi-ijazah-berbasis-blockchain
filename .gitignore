@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Environment files (Sangat rahasia: JANGAN PERNAH DI-COMMIT)
+**/.env
+**/.env*.local
+**/.env.production
+**/.env.development
+!**/.env.example
+
+# Blockchain node runtime data & Hardhat artifacts
+blockchain-besu/data/**
+!blockchain-besu/data/.gitkeep
+blockchain-besu/artifacts/
+blockchain-besu/cache/
+blockchain-besu/typechain-types/
+
+# Logs & debug
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+*.pem
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# TypeScript build info
+*.tsbuildinfo
+next-env.d.ts

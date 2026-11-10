@@ -1,0 +1,14 @@
+{
+  "name": "verifikasi-ijazah-smart-contract",
+  "version": "1.0.0",
+  "description": "Smart contract for diploma validation",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.21.0"
+  }
+}

@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// Enum status alur persetujuan berjenjang
+// ============================================================
+enum StatusPersetujuan {
+  MENUNGGU_DEKAN
+  MENUNGGU_REKTOR
+  DITERBITKAN
+}
+
+// ============================================================
+// Model BatchWisuda: Mengelompokkan data ijazah per periode
+// ============================================================
+model BatchWisuda {
+  id            String         @id @default(cuid())
+  namaPeriode   String         // Contoh: "Wisuda Periode II Tahun 2026"
+  tanggalWisuda DateTime
+  keterangan    String?
+  createdAt     DateTime       @default(now())
+  drafts        DraftIjazah[]
+}
+
+// ============================================================
+// Model DraftIjazah: Data individu mahasiswa dalam batch
+// ============================================================
+model DraftIjazah {
+  id            String            @id @default(cuid())
+  batchId       String
+  batch         BatchWisuda       @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  nomorIjazah   String            @unique
+  nama          String
+  npm           String
+  fakultas      String
+  status        StatusPersetujuan @default(MENUNGGU_DEKAN)
+  txHash        String?           // Hash transaksi blockchain setelah diterbitkan
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
